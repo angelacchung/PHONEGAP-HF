@@ -6,10 +6,10 @@
         id        = "com.sheridan.imm.collective"
         version   = "1.0.0">
 
-    <name>Hello World</name>
+    <name>Hidden Friend</name>
 
     <description>
-        Hello World sample application that responds to the deviceready event.
+        Hidden Friend is an app that you can talk to when you're feeling down. 
     </description>
 
     <author href="http://phonegap.com" email="support@phonegap.com">
