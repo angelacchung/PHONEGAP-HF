@@ -1,68 +1,145 @@
-<!doctype html>
 <html>
 <head>
 <meta charset="utf-8" />
-<title>ZIM Frame - Fit Template</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<title>Hidden Friend</title>
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="css/main.css">
 
-<!-- Welcome to ZIM at https://zimjs.com - Code Creativity!              	        -->
-<!-- ZIM runs on the HTML Canvas powered by JavaScript and CreateJS https://createjs.com -->
-<!-- Founded by Inventor Dan Zen - https://danzen.com - Canadian New Media Award Winner 	-->
-<!-- ZIM is free to use. You can donate to help improve ZIM at https://zimjs.com/donate 	-->
+<style>
+    body {margin:0px;
+        background-color:#021b42;
+    }
+	canvas {width:100%; height:100%}
+</style>
 
-<script src="js/create.js"></script>
-<script src="js/zim.js"></script>
-<!-- use zimjs.com/distill for minified individual functions! -->
+</head>
+<body>
+    <div class="resize">
+    <img class="img" src="1.png">
+    </div>
+    <div class="center w">
+        <h1 class="hiddenFriend">
+        Hidden Friend
+        </h1>
+    </div>
+
+    <button id="startBtn" class="btn">Start</button>
+    <a href="inst.html" id = "infoBtn" class="btn">Info</a>
+<script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r82/three.min.js"></script>
+<script src="js/orbitControls.js"></script>
 
 <script>
 
-// SCALING OPTIONS
-// scaling can have values as follows with full being the default
-// "fit"	sets canvas and stage to dimensions and scales to fit inside window size
-// "outside"	sets canvas and stage to dimensions and scales to fit outside window size
-// "full"	sets stage to window size with no scaling
-// "tagID"	add canvas to HTML tag of ID - set to dimensions if provided - no scaling
+// SCENE
+var scene = new THREE.Scene(); 
+	
+	// CAMERA
+	var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 43;
+    camera.position.y =6;
+	// camera.position.x = 5;
+	// camera.position.y = -5;
+	camera.lookAt(scene.position);
+	
+	// RENDERER
+	var renderer = new THREE.WebGLRenderer({antialias:true}); 
+	renderer.setSize(window.innerWidth, window.innerHeight); 
+	document.body.appendChild(renderer.domElement);
+	
+	
+   
+    
 
-var scaling = "fit"; // this will resize to fit inside the screen dimensions
-var width = 1024;
-var height = 768;
-var color = light; // ZIM colors like green, blue, pink, faint, clear, etc. available globally
-var outerColor = dark; // any HTML colors like "violet", "#333", etc. fine to use
+    // HEAD
+    var geom = new THREE.DodecahedronGeometry(12,1);
+    var mat = new THREE.MeshLambertMaterial({color:0xf765b5}); // works only with light and has gloss
+    var head = new THREE.Mesh(geom, mat);//this is what we need to add to the scene. Our scene is called scene (var scene)
+    head.position.set(0,14,-5)
+    scene.add(head);
 
-var frame = new Frame(scaling, width, height, color, outerColor);
-frame.on("ready", function() {
-    zog("ready from ZIM Frame"); // logs in console (F12 - choose console)
+    // FACE
+    var eyeGeom = new THREE.BoxGeometry(2,2.5,1.5);
+	var eyeMat = new THREE.MeshPhongMaterial({color:0x021b42}); // works only with light and has gloss
+    var eyeMesh = new THREE.Mesh(eyeGeom, eyeMat);
+    eyeMesh.position.set(4,14,7);
+    scene.add(eyeMesh);
 
-    var stage = frame.stage;
-    var stageW = frame.width;
-    var stageH = frame.height;
+    var eyeGeomw = new THREE.BoxGeometry(2.5,3,1.5);
+	var eyeMatw = new THREE.MeshPhongMaterial({color:'white'}); // works only with light and has gloss
+    var eyeMeshw = new THREE.Mesh(eyeGeomw, eyeMatw);
+    eyeMeshw.position.set(4,14,6.98);
+    scene.add(eyeMeshw);
 
-    // see https://zimjs.com/learn.html for video and code tutorials
-    // see https://zimjs.com/docs.html for documentation
-    // see https://zimjs.com/bits.html for 64 Interactive Media techniques
+    var eyeGeom2 = new THREE.BoxGeometry(2,2.5,1.5);
+	var eyeMat2 = new THREE.MeshPhongMaterial({color:0x021b42}); // works only with light and has gloss
+    var eyeMesh2 = new THREE.Mesh(eyeGeom2, eyeMat2);
+    eyeMesh2.position.set(-4,14,7);
+    scene.add(eyeMesh2);
 
-    // put your code here (you can delete this sample code)
+    var eyeGeomw2 = new THREE.BoxGeometry(2.5,3,1.5);
+	var eyeMatw2 = new THREE.MeshPhongMaterial({color:'white'}); // works only with light and has gloss
+    var eyeMeshw2 = new THREE.Mesh(eyeGeomw2, eyeMatw2);
+    eyeMeshw2.position.set(-4,14,6.98);
+    scene.add(eyeMeshw2);
 
-    // with chaining - can also assign to a variable for later access
-    new Circle(100, pink)
-        .center()
-        .drag();
+    
+    var smileGeom = new THREE.TorusGeometry( 1, 0.25, 6,30, Math.PI );
+    var smileMat = new THREE.MeshPhongMaterial({color:0x021b42});
+	var smile = new THREE.Mesh(smileGeom,smileMat)
+	scene.add(smile)
+	smile.rotation.z=9.45
+	smile.position.set(0,10,7.5);
 
-    // without chaining
-    // var circle = new Circle(100, pink);
-    // circle.center();
-    // circle.drag();
+	//rotation by angle degrees
+    head.rotation.y = 0;
+	head.rotation.x = 0;
+	// LIGHT
+    var directionalLight = new THREE.DirectionalLight( 'white', 1.3 );
+	var light = new THREE.AmbientLight('white', 0.2);
+    directionalLight.position.set(2, 7, 20);
+    light.position.set(45, 41, 40);
+    scene.add( directionalLight );
+	scene.add(light);
+	
 
-    stage.update(); // this is needed to show any changes
+    
+    makeRoom();
+    function makeRoom() {
+        var geometry = new THREE.BoxGeometry(170, 150, 150);
+        var roomMaterialArray = [];
+        // order to add materials: x+,x-,y+,y-,z+,z-
+        roomMaterialArray.push(new THREE.MeshBasicMaterial({color: 0x021b42, side: THREE.DoubleSide}));
+        roomMaterialArray.push(new THREE.MeshBasicMaterial({color: 0x021b42, side: THREE.DoubleSide}));
+        roomMaterialArray.push(new THREE.MeshBasicMaterial({color: 0x021b42, side: THREE.DoubleSide}));
+        roomMaterialArray.push(new THREE.MeshBasicMaterial({color: 0x021b42, side: THREE.DoubleSide}));
+        roomMaterialArray.push(new THREE.MeshBasicMaterial({color: 0x021b42, side: THREE.DoubleSide}));
+        roomMaterialArray.push(new THREE.MeshBasicMaterial({color: 0x021b42, side: THREE.DoubleSide}));
+        var material = new THREE.MeshFaceMaterial(roomMaterialArray);
+        var room = new THREE.Mesh(geometry, material);
+        scene.add(room);
+    }
 
-}); // end of ready
+
+
+
+
+
+
+
+	var controls = new THREE.OrbitControls(camera, renderer.domElement);
+	// ANIMATION
+	function render() {
+		// animate mesh or camera (or lights)
+		// console.log("rendering");
+		head.rotation.y += 0.005;
+		requestAnimationFrame(render); 
+		renderer.render(scene, camera); 
+	} 
+	render();
 
 </script>
+<script src="js/main.js"></script>
 
-<meta name="viewport" content="width=device-width, user-scalable=no" />
-
-</head>
-
-<body>
-<!-- canvas with id="myCanvas" is made by zim Frame -->
-</body>
-</html>
+</body></html>
